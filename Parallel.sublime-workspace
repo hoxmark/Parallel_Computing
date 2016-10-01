@@ -1,0 +1,578 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"gather",
+				"gather_Temp"
+			],
+			[
+				"lco",
+				"local_temp"
+			],
+			[
+				"tem",
+				"temperature"
+			],
+			[
+				"siz",
+				"sizeof"
+			],
+			[
+				"scat",
+				"scatter_Mat"
+			],
+			[
+				"locl",
+				"local_grid_size"
+			],
+			[
+				"gir",
+				"GRID_SIZE"
+			],
+			[
+				"dis",
+				"dis_x"
+			],
+			[
+				"materi",
+				"material"
+			],
+			[
+				"local_ma",
+				"local_material_size"
+			],
+			[
+				"SIZE",
+				"GRID_SIZE"
+			],
+			[
+				"sca",
+				"scatter_Mat"
+			],
+			[
+				"MPI_",
+				"MPI_FLOAT"
+			],
+			[
+				"Grid",
+				"GRID_SIZE"
+			],
+			[
+				"G",
+				"GRID_SIZE"
+			],
+			[
+				"sc",
+				"scatter_Temp"
+			],
+			[
+				"loc",
+				"local_grid_size"
+			],
+			[
+				"gat",
+				"gather_Temp"
+			],
+			[
+				"local",
+				"local_grid_size"
+			],
+			[
+				"local_mat",
+				"local_material_size"
+			],
+			[
+				"col",
+				"border_col"
+			],
+			[
+				"te",
+				"test"
+			],
+			[
+				"loca",
+				"local_grid_size"
+			],
+			[
+				"bor",
+				"BORDER"
+			],
+			[
+				"gri",
+				"GRID_SIZE"
+			],
+			[
+				"lo",
+				"local_grid_size"
+			],
+			[
+				"north",
+				"northBorder"
+			],
+			[
+				"MPI",
+				"MPI_FLOAT"
+			],
+			[
+				"mat",
+				"local_material"
+			],
+			[
+				"mater",
+				"material"
+			],
+			[
+				"LOCAL",
+				"local_grid_size"
+			],
+			[
+				"out",
+				"outBuffer"
+			],
+			[
+				"border_",
+				"border_exchange"
+			],
+			[
+				"comm",
+				"commit_error"
+			],
+			[
+				"pth",
+				"pthread_create"
+			],
+			[
+				"each",
+				"eachProcess"
+			],
+			[
+				"ser",
+				"serialTimeStopp"
+			],
+			[
+				"for",
+				"form"
+			],
+			[
+				"is",
+				"isEditing"
+			],
+			[
+				"to",
+				"todos"
+			],
+			[
+				"taskS",
+				"taskStyle"
+			],
+			[
+				"create",
+				"createInput"
+			],
+			[
+				"crea",
+				"create-todo"
+			],
+			[
+				"render",
+				"renderActionsSection"
+			],
+			[
+				"TO",
+				"TodosListItem"
+			],
+			[
+				"Todo",
+				"TodosList"
+			],
+			[
+				"rende",
+				"renderItems"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "Packages/User/untitled.sublime-build",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/User/untitled.sublime-build",
+					""
+				],
+				[
+					"Packages/User/untitled.sublime-build",
+					"Run"
+				]
+			],
+			[
+				"Packages/User/untitled.sublime-build",
+				"Run"
+			]
+		],
+		[
+			[
+				[
+					"Packages/User/untitled.sublime-build",
+					""
+				],
+				[
+					"Packages/User/untitled.sublime-build",
+					"Run"
+				],
+				[
+					"Packages/User/untitled.sublime-build",
+					"C and Run"
+				]
+			],
+			[
+				"Packages/User/untitled.sublime-build",
+				"C and Run"
+			]
+		],
+		[
+			[
+				[
+					"Packages/User/untitled.sublime-build",
+					""
+				],
+				[
+					"Packages/User/untitled.sublime-build",
+					"Run"
+				],
+				[
+					"Packages/User/untitled.sublime-build",
+					"C and Run"
+				],
+				[
+					"Packages/User/untitled.sublime-build",
+					"make && make run"
+				]
+			],
+			[
+				"Packages/User/untitled.sublime-build",
+				"make && make run"
+			]
+		]
+	],
+	"build_varint": "make && make run",
+	"command_palette":
+	{
+		"height": 147.0,
+		"last_filter": "key",
+		"selected_items":
+		[
+			[
+				"key",
+				"Preferences: SFTP Key Bindings"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"install ",
+				"Package Control: Install Package"
+			],
+			[
+				"pack",
+				"Preferences: Browse Packages"
+			]
+		],
+		"width": 485.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/hoxmark/Developer/Parallel/NTNU",
+		"/Users/hoxmark/Developer/Parallel/NTNU/PS2p2"
+	],
+	"file_history":
+	[
+		"/Users/hoxmark/Developer/Parallel/NTNU/PS2p2/Makefile",
+		"/Users/hoxmark/Developer/Parallel/NTNU/PS2p2/heat.c",
+		"/Users/hoxmark/Library/Application Support/Sublime Text 3/Packages/SFTP/Default (OSX).sublime-keymap",
+		"/Users/hoxmark/Library/Application Support/Sublime Text 3/Packages/User/untitled.sublime-build",
+		"/Users/hoxmark/Dropbox/Skole/Master-NTNU/7.semester/Parallelle/Ovinger/PS2Part2/BackupMandag/PS2p2/123/heat.c",
+		"/Users/hoxmark/Desktop/heat.c",
+		"/Users/hoxmark/Developer/Parallel/NTNU/PS2p2/ps2 updated?/heat_serial.c",
+		"/Users/hoxmark/Developer/Parallel/NTNU/PS2p2/heat_serial.c",
+		"/Users/hoxmark/Developer/Parallel/NTNU/PS1p2/manPar.c",
+		"/Users/hoxmark/Downloads/lect03-parallel-intro-f2016.pdf.json",
+		"/Users/hoxmark/Developer/Parallel/NTNU/PS1p2/mandel2.bmp",
+		"/Users/hoxmark/Developer/Parallel/NTNU/Testing/helloWorldPthread.c",
+		"/Users/hoxmark/Desktop/sftpSettingSchoolLinux.json",
+		"/Users/hoxmark/Desktop/LinuxSchool.sublime-workspace",
+		"/Users/hoxmark/Library/Application Support/Sublime Text 3/Packages/User/mpiBuild.sublime-build",
+		"/Users/hoxmark/Developer/Parallel/NTNU/manPar.c",
+		"/Users/hoxmark/Developer/Parallel/NTNU/sftp-config.json",
+		"/var/folders/7n/7_dkyb9n0xgdlsj7087x6cyc0000gn/T/sublime-sftp-browse-1473419809/sftp-config.json/home/shomed/b/bjornhox/Developer/mandel2.bmp",
+		"/Users/hoxmark/Library/Application Support/Sublime Text 3/Packages/User/SFTP.errors.log",
+		"/Users/hoxmark/Dropbox/Skole/Master-NTNU/7.semester/Parallelle/Ovinger/PS1part2/PS1_2/mandel_serial.c",
+		"/Users/hoxmark/Library/Application Support/Sublime Text 3/Packages/User/sftp_servers/sftp-config.json",
+		"/var/folders/7n/7_dkyb9n0xgdlsj7087x6cyc0000gn/T/sublime-sftp-browse-1473411615/sftp-config.json/home/shomed/b/bjornhox/Developer/test",
+		"/var/folders/7n/7_dkyb9n0xgdlsj7087x6cyc0000gn/T/sublime-sftp-browse-1473411615/sftp-config.json/sftp-config-alt.json",
+		"/Users/hoxmark/Library/Application Support/Sublime Text 3/Packages/User/sftp_servers/ftp-config.json",
+		"/Users/hoxmark/Library/Application Support/Sublime Text 3/Packages/FTPSync/FTPSync.sublime-settings",
+		"/Users/hoxmark/Desktop/send.c",
+		"/Users/hoxmark/Desktop/mpi_hello_world.c",
+		"/Users/hoxmark/Desktop/30august.c",
+		"/Users/hoxmark/Developer/NordicSemi/nrfconnect-deploy/nRF Connect-darwin-x64/nRF Connect.app/Contents/Resources/app/js/actions/mesh/nRF5MultiProgActions.js",
+		"/Users/hoxmark/Developer/NordicSemi/pc-yggdrasil/js/actions/mesh/nRF5MultiProgActions.js",
+		"/Users/hoxmark/Developer/NordicSemi/nrfconnect-deploy/nRF Connect-darwin-x64/nRFConnect.app/Contents/Resources/app/js/actions/mesh/nRF5MultiProgActions.js",
+		"/Users/hoxmark/Developer/NordicSemi/pc-yggdrasil/js/actions/firmwareUpdateActions.js",
+		"/Users/hoxmark/Developer/NordicSemi/tes/mesh_listener.js",
+		"/Users/hoxmark/Downloads/react-bootstrap-table-master/css/react-bootstrap-table.css",
+		"/Users/hoxmark/Downloads/react-bootstrap-table-master/css/react-bootstrap-table.min.css",
+		"/Users/hoxmark/Developer/NordicSemi/pc-yggdrasil/node_modules/pc-ble-driver-js/node_modules/cmake-js/lib/cMake.js",
+		"/Users/hoxmark/Downloads/5-68-184726",
+		"/Users/hoxmark/Desktop/john-1.8.0/run/password.lst",
+		"/Users/hoxmark/Desktop/john-1.8.0/run/passwordtest.lst",
+		"/Users/hoxmark/Developer/todos/src/index.js",
+		"/Users/hoxmark/Developer/todos/index.html",
+		"/Users/hoxmark/Developer/todos/src/components/todo-list-item.js",
+		"/Users/hoxmark/Developer/todos/src/components/todo-list-header.js",
+		"/Users/hoxmark/Developer/todos/src/components/todoslist.js",
+		"/Users/hoxmark/Developer/todos/src/components/app.js",
+		"/Users/hoxmark/Developer/todos/webpack.config.js",
+		"/Users/hoxmark/Developer/todos/package.json",
+		"/Users/hoxmark/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"todo",
+			"current_cords",
+			"scatter_temp",
+			"scatter_Temp",
+			"scatter_Mat_Back",
+			"stats",
+			"reqs",
+			"scatter_Temp_Back",
+			"scatter_temp",
+			"scatter_Temp",
+			"scatter_temp",
+			"scatter_Temp",
+			"gather_Temp_Back",
+			"gather_temp",
+			"gather_Temp",
+			"gather_temp",
+			"gather_Temp",
+			"outBuffer",
+			"local_grid_size[1], 1, local_grid_size[0]+(2), MPI_FLOAT,",
+			"MPI_Type_vector(local_grid_size[1],local_grid_size[0],GRID_SIZE[0], MPI_FLOAT",
+			"+2",
+			"+ 2",
+			"local_temp[",
+			"ti",
+			"create",
+			"start",
+			"temperature",
+			"scatter_temp",
+			"local_temp",
+			"SCATTER",
+			"border_exchange",
+			"neighbors",
+			"local_temp",
+			"scatter_temp",
+			"outBuffer",
+			"local_scatter_Mat",
+			"border_col",
+			"neighbors",
+			"for",
+			"barr",
+			"gather_temp",
+			"MPI_FLOAT",
+			"gather_Mat",
+			"timestep",
+			"material",
+			"local_temp",
+			"                //",
+			"material",
+			"local_grid_size",
+			"]);\n",
+			"Nei",
+			"Nig",
+			"block",
+			"init_local_temp",
+			"0.098",
+			"0.98",
+			"0.116",
+			"0.115",
+			"40",
+			"printf",
+			"local_temp",
+			"BORDER",
+			"MPI_COMM_WORLD",
+			"15",
+			"55",
+			"000155",
+			"local_material",
+			"lsize",
+			"local_material",
+			"isend",
+			"req",
+			"MPI_Cart_create",
+			"cart",
+			"temperature",
+			"border_exchange",
+			"commit",
+			"humac",
+			"nyttig",
+			"}",
+			">\n"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"currentCords",
+			"gather_Temp"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"folders":
+	[
+		{
+			"path": "/Users/hoxmark/Developer/Parallel/NTNU"
+		}
+	],
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 25.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 129.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.sftp":
+	{
+		"height": 100.0
+	},
+	"pinned_build_system": "Packages/User/untitled.sublime-build",
+	"project": "",
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 142.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
