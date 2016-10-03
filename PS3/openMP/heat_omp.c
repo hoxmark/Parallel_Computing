@@ -90,9 +90,24 @@ int mi(int x, int y){
 
 
 
+
 void ftcs_solver( int step ){
-    for(int x = 0; x < GRID_SIZE[0]; x++){
-        for(int y = 0; y < GRID_SIZE[1]; y++){
+    #pragma omp parallel 
+    {
+        int thisThreadRank = omp_get_thread_num();
+        int numberOfThreads = omp_get_num_threads();
+
+        int whatWeNeedToLoopThru = (GRID_SIZE[0]*GRID_SIZE[1]);
+        int whatEachThreadCanTake = whatWeNeedToLoopThru/numberOfThreads;
+
+        int start = whatEachThreadCanTake*thisThreadRank;
+        
+        for (int i = start; i < (start+whatEachThreadCanTake); ++i)
+        {
+
+            int x = i%GRID_SIZE[0];
+            int y = i/GRID_SIZE[1];
+
             float* in = temperature[(step)%2];
             float* out = temperature[(step+1)%2];
             
@@ -106,7 +121,17 @@ void ftcs_solver( int step ){
     }
 }
 
+
 void external_heat( int step ){
+    // int thisThreadRank = omp_get_thread_num();
+    // int numberOfThreads = omp_get_num_threads();
+
+    // int whatWeNeedToLoopThru = (GRID_SIZE[0]*GRID_SIZE[1]);
+
+    // int whatEachThreadCanTake = whatWeNeedToLoopThru/numberOfThreads;
+
+    // int start = whatEachThreadCanTake*thisThreadRank;
+    //#pragma omp parallel for num_threads(n_threads) collapse(2)
     for(int x=(GRID_SIZE[0]/4); x<=(3*GRID_SIZE[0]/4); x++){
         for(int y=(GRID_SIZE[1]/2)-(GRID_SIZE[1]/16); y<=(GRID_SIZE[1]/2)+(GRID_SIZE[1]/16); y++){
             temperature[step%2][ti(x,y)] = 100.0;
@@ -125,7 +150,10 @@ int main ( int argc, char **argv ){
         exit(-1);
     }
     n_threads = atoi(argv[1]);
-        
+
+    omp_set_num_threads(n_threads);
+    
+
     size_t temperature_size =(GRID_SIZE[0]+2*(BORDER))*(GRID_SIZE[1]+2*(BORDER));
     temperature[0] = calloc(temperature_size, sizeof(float));
     temperature[1] = calloc(temperature_size, sizeof(float));
