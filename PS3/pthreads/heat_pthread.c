@@ -130,8 +130,6 @@ void* ftcs_solver_thread( void *arguments ){
 
 }
 
- 
-
 void ftcs_solver( int step ){ 
     struct arg_struct argStrucsArray[n_threads];
     long thread;
@@ -158,18 +156,56 @@ void ftcs_solver( int step ){
     
 }
 
+void* external_heat_y(void *arguments){
+    struct arg_struct *args = (struct arg_struct *)arguments;
 
-void external_heat( int step ){
+    int thisThreadRank = args->arg1;
+    int numberOfThreads = n_threads;
+    int step = args->arg2;
+
+
+
+    int allThreadsNeedToIterate = (2*GRID_SIZE[1]/16);
+    int oneThreadNeedsToIterate = allThreadsNeedToIterate/numberOfThreads;
+
+    int startingPoint = (GRID_SIZE[1]/2)-(GRID_SIZE[1]/16);
+    int starty = startingPoint+(oneThreadNeedsToIterate*thisThreadRank);
+
+    
     for(int x=(GRID_SIZE[0]/4); x<=(3*GRID_SIZE[0]/4); x++){
-        for(int y=(GRID_SIZE[1]/2)-(GRID_SIZE[1]/16); y<=(GRID_SIZE[1]/2)+(GRID_SIZE[1]/16); y++){
+        //for(int y=(GRID_SIZE[1]/2)-(GRID_SIZE[1]/16); y<=(GRID_SIZE[1]/2)+(GRID_SIZE[1]/16); y++){
+        for(int y=starty; y <= starty+oneThreadNeedsToIterate ; y++){
             temperature[step%2][ti(x,y)] = 100.0;
 
         }
     }
+
 }
 
 
-    
+void external_heat( int step ){
+    struct arg_struct argStrucsArray[n_threads];
+    pthread_t* thread_handles;
+
+    thread_handles = malloc(n_threads * sizeof(pthread_t));
+
+    for (int this_thread = 0; this_thread < n_threads; this_thread++)
+    {
+        struct arg_struct args;
+        argStrucsArray[this_thread].arg1 = this_thread;
+        argStrucsArray[this_thread].arg2 = step;
+
+        if( pthread_create(&thread_handles[this_thread], NULL, &external_heat_y, (void*)&argStrucsArray[this_thread]) != 0){
+            printf("Ikke oK\n");
+            return -1;
+        }
+    }
+
+    for (int this_thread = 0; this_thread < n_threads; this_thread++)
+    {        
+        pthread_join(thread_handles[this_thread], NULL);
+    } 
+}
 
 int main ( int argc, char **argv ){
     printf("starting pthreads\n");
