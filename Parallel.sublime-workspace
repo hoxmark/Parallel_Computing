@@ -4,6 +4,42 @@
 		"selected_items":
 		[
 			[
+				"thread",
+				"num_threads"
+			],
+			[
+				"this",
+				"thisThreadNeedsToIterate"
+			],
+			[
+				"pthr",
+				"pthread"
+			],
+			[
+				"arg",
+				"arg1"
+			],
+			[
+				"n",
+				"n_threads"
+			],
+			[
+				"threa",
+				"threads"
+			],
+			[
+				"num",
+				"numberOfThreads"
+			],
+			[
+				"we",
+				"whatWeNeedToLoopThru"
+			],
+			[
+				"grid",
+				"GRID_SIZE"
+			],
+			[
 				"gather",
 				"gather_Temp"
 			],
@@ -195,6 +231,42 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "/Users/hoxmark/Library/Application Support/Sublime Text 3/Packages/SFTP/Default (OSX).sublime-keymap",
+			"settings":
+			{
+				"buffer_size": 1490,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "PS3/openMP/heat_omp.c",
+			"settings":
+			{
+				"buffer_size": 7971,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "PS4/PS4.c",
+			"settings":
+			{
+				"buffer_size": 61,
+				"encoding": "UTF-8",
+				"line_ending": "Unix",
+				"name": "#include<stdio.h>"
+			}
+		},
+		{
+			"file": "/Users/hoxmark/Library/Application Support/Sublime Text 3/Packages/User/untitled.sublime-build",
+			"settings":
+			{
+				"buffer_size": 642,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "Packages/User/untitled.sublime-build",
 	"build_system_choices":
@@ -258,9 +330,69 @@
 				"Packages/User/untitled.sublime-build",
 				"make && make run"
 			]
+		],
+		[
+			[
+				[
+					"Packages/User/untitled.sublime-build",
+					""
+				],
+				[
+					"Packages/User/untitled.sublime-build",
+					"Run"
+				],
+				[
+					"Packages/User/untitled.sublime-build",
+					"C and Run"
+				],
+				[
+					"Packages/User/untitled.sublime-build",
+					"make && make run"
+				],
+				[
+					"Packages/User/untitled.sublime-build",
+					"OpenMP"
+				]
+			],
+			[
+				"Packages/User/untitled.sublime-build",
+				"OpenMP"
+			]
+		],
+		[
+			[
+				[
+					"Packages/User/untitled.sublime-build",
+					""
+				],
+				[
+					"Packages/User/untitled.sublime-build",
+					"Run"
+				],
+				[
+					"Packages/User/untitled.sublime-build",
+					"C and Run"
+				],
+				[
+					"Packages/User/untitled.sublime-build",
+					"make && make run"
+				],
+				[
+					"Packages/User/untitled.sublime-build",
+					"OpenMP"
+				],
+				[
+					"Packages/User/untitled.sublime-build",
+					"pThreads"
+				]
+			],
+			[
+				"Packages/User/untitled.sublime-build",
+				""
+			]
 		]
 	],
-	"build_varint": "make && make run",
+	"build_varint": "",
 	"command_palette":
 	{
 		"height": 147.0,
@@ -306,14 +438,25 @@
 	"expanded_folders":
 	[
 		"/Users/hoxmark/Developer/Parallel/NTNU",
-		"/Users/hoxmark/Developer/Parallel/NTNU/PS2p2"
+		"/Users/hoxmark/Developer/Parallel/NTNU/PS3/Unused"
 	],
 	"file_history":
 	[
-		"/Users/hoxmark/Developer/Parallel/NTNU/PS2p2/Makefile",
-		"/Users/hoxmark/Developer/Parallel/NTNU/PS2p2/heat.c",
-		"/Users/hoxmark/Library/Application Support/Sublime Text 3/Packages/SFTP/Default (OSX).sublime-keymap",
+		"/Users/hoxmark/Developer/Parallel/NTNU/PS3/Unused/heat_serial.c",
+		"/Users/hoxmark/Developer/Parallel/NTNU/PS3/pthreads/heat_pthread.c",
+		"/Users/hoxmark/Developer/Parallel/NTNU/PS3/pthreads/data/0015.bmp",
+		"/Users/hoxmark/Developer/Parallel/NTNU/PS3/Makefile",
+		"/Users/hoxmark/Developer/Parallel/NTNU/PS3/openMP/Makefile",
+		"/Users/hoxmark/Developer/Parallel/NTNU/PS3/pthreads/Makefile",
+		"/Users/hoxmark/Developer/Parallel/NTNU/PS3/heat_pthread.c",
+		"/Users/hoxmark/Developer/Parallel/NTNU/Testing/openmp.c",
+		"/Users/hoxmark/Developer/Parallel/NTNU/Testing/pthreads.c",
+		"/Users/hoxmark/Developer/Parallel/NTNU/PS3/heat_omp.c",
 		"/Users/hoxmark/Library/Application Support/Sublime Text 3/Packages/User/untitled.sublime-build",
+		"/Users/hoxmark/Developer/Parallel/NTNU/PS3/a.out",
+		"/Users/hoxmark/Developer/Parallel/NTNU/PS2p2/heat.c",
+		"/Users/hoxmark/Developer/Parallel/NTNU/PS2p2/Makefile",
+		"/Users/hoxmark/Library/Application Support/Sublime Text 3/Packages/SFTP/Default (OSX).sublime-keymap",
 		"/Users/hoxmark/Dropbox/Skole/Master-NTNU/7.semester/Parallelle/Ovinger/PS2Part2/BackupMandag/PS2p2/123/heat.c",
 		"/Users/hoxmark/Desktop/heat.c",
 		"/Users/hoxmark/Developer/Parallel/NTNU/PS2p2/ps2 updated?/heat_serial.c",
@@ -375,6 +518,9 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"external_heat",
+			"segment",
+			"n_threads",
 			"todo",
 			"current_cords",
 			"scatter_temp",
@@ -480,8 +626,137 @@
 	"groups":
 	[
 		{
+			"selected": 2,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "/Users/hoxmark/Library/Application Support/Sublime Text 3/Packages/SFTP/Default (OSX).sublime-keymap",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1490,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "PS3/openMP/heat_omp.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7971,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3157,
+								3157
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/C Improved/C Improved.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1816.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "PS4/PS4.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 61,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								23,
+								23
+							]
+						],
+						"settings":
+						{
+							"auto_name": "#include<stdio.h>",
+							"incomplete_sync": null,
+							"syntax": "Packages/C Improved/C Improved.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/Users/hoxmark/Library/Application Support/Sublime Text 3/Packages/User/untitled.sublime-build",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 642,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								184,
+								184
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -518,7 +793,7 @@
 	"menu_visible": true,
 	"output.exec":
 	{
-		"height": 129.0
+		"height": 284.0
 	},
 	"output.find_results":
 	{
