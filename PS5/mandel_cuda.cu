@@ -63,23 +63,23 @@ __global__ void device_calculate(int *a, double xleft, double yupper, double ste
   int i = blockIdx.x * BLOCKX + threadIdx.x;
   int j = blockIdx.y * BLOCKY + threadIdx.y;
 
-  // complex_t c, z, temp;
+  complex_t c, z, temp;
 
-  // int iter = 0; 
-  // c.real = xleft + (step*i);
-  // c.imag = (yupper - step*j);
+  int iter = 0; 
+  c.real = xleft + (step*i);
+  c.imag = (yupper - step*j);
 
-  // z = c; 
+  z = c; 
 
-  // while (z.real*z.real + z.imag*z.imag<4.0){
-  //   temp.real = z.real*z.real - z.imag*z.imag + c.real;
-  //   temp.imag = 2.0 * z.real*z.imag + c.imag;
-  //   z = temp;
-  //   if (++iter == MAXITER) break;
-  // }
+  while (z.real*z.real + z.imag*z.imag<4.0){
+    temp.real = z.real*z.real - z.imag*z.imag + c.real;
+    temp.imag = 2.0 * z.real*z.imag + c.imag;
+    z = temp;
+    if (++iter == MAXITER) break;
+  }
 
-  // a[PIXEL(i,j)]=iter;
-  a[PIXEL(i,j)]=1;
+  a[PIXEL(i,j)]=iter;
+  // a[PIXEL(i,j)]=1;
   
 
 }
@@ -116,17 +116,6 @@ void calculate_cuda(int* pixel){
     // Transfer result from GPU to CPU
     cudaMemcpy(pixel, a, XSIZE*YSIZE*sizeof(int), cudaMemcpyDeviceToHost);
     cudaFree(a);
-
-    for (int i = 0; i < 10; ++i)
-    {
-      for (int j = 0; j < 10; ++j)
-      {
-        printf("%d",pixel[i*j]);
-        
-      }
-    }
-
-
 }
 
 
@@ -195,10 +184,10 @@ int main(int argc, char **argv) {
   int* pixel_for_gpu = (int*) malloc(sizeof(int) * XSIZE * YSIZE);
   
 
-  /* Perform calculation on CPU */
-  double start_cpu = walltime();
-  calculate(pixel_for_cpu);
-  double end_cpu = walltime();
+  // /* Perform calculation on CPU */
+  // double start_cpu = walltime();
+  // calculate(pixel_for_cpu);
+  // double end_cpu = walltime();
   
   /* Perform calculations on GPU */
   double start_gpu = walltime();
@@ -209,7 +198,7 @@ int main(int argc, char **argv) {
   /* Compare execution times
    * The GPU time also includes the time for memory allocation and transfer
    */
-  printf("CPU time: %f s\n" , (end_cpu-start_cpu));
+  // printf("CPU time: %f s\n" , (end_cpu-start_cpu));
   printf("GPU time: %f s\n" , (end_gpu-start_gpu));
   
 
