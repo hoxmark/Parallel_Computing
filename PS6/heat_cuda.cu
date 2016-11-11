@@ -76,6 +76,9 @@ const float
 /* Size of the computational grid - 1024x1024 square */
 const int GRID_SIZE[2] = {2048, 2048};
 
+#define GRID_SIZE_X 2048
+#define GRID_SIZE_y 2048
+
 /* Parameters of the simulation: how many steps, and when to cut off the heat */
 const int NSTEPS = 10000;
 const int CUTOFF = 5000;
@@ -124,19 +127,15 @@ void transfer_to_gpu(){
 void transfer_from_gpu(int step){
     // cudaMemcpy(material, material_device, GRID_SIZE[0]*GRID_SIZE[1]*sizeof(float), cudaMemcpyDeviceToHost);
     // cudaMemcpy(temperature, temperature_device[0] , GRID_SIZE[0]*GRID_SIZE[1]*sizeof(float), cudaMemcpyDeviceToHost);
-    printf("2 value: %f \n", temperature[1]);
     cudaMemcpy(temperature, temperature_device[(step+1)%2] , GRID_SIZE[0]*GRID_SIZE[1]*sizeof(float), cudaMemcpyDeviceToHost);
     
-    printf("3 value: %f \n", temperature[1]);
-
 }
 
  // Plain/global memory only kernel
 __global__ void  ftcs_kernel(int step, float *zero, float *one, float *material_device){ /* Add arguments here   */
-    const int GRID_SIZE[2] = {2048, 2048};
-    int i = (blockIdx.x * (2048/128)) + threadIdx.x;
-    int j = (blockIdx.y * (2048/128)) + threadIdx.y;
-    int palceInArray = i * 2048 + j;
+    int i = (blockIdx.x * (blockDim.x)) + threadIdx.x;
+    int j = (blockIdx.y * (blockDim.y)) + threadIdx.y;
+    int palceInArray = i * GRID_SIZE_X + j;
 
     if (i == 0){
         i=1;
@@ -156,21 +155,27 @@ __global__ void  ftcs_kernel(int step, float *zero, float *one, float *material_
 
     if (step % 2 == 0){
         one[palceInArray] = zero[palceInArray] + material_device[palceInArray]*(
-            zero[(i+1)*2048 + (j+0)] + 
-            zero[(i-1)*2048 + (j+0)] +  
-            zero[(i+0)*2048 + (j+1)] + 
-            zero[(i+0)*2048 + (j-1)] - 
+            zero[(i+1)* GRID_SIZE_X + (j+0)] + 
+            zero[(i-1)* GRID_SIZE_X + (j+0)] +  
+            zero[(i+0)* 2048 + (j+1)] + 
+            zero[(i+0)* 2048 + (j-1)] - 
             4*zero[palceInArray]);
     } else {
         // zero[palceInArray] = one[palceInArray] + material_device[palceInArray]*(one[(i+1)*2048 + j] + one[(i-1)*2048 + j] +  one[(i)*2048 + j+1] + one[(i*2048) + (j-1)] - 4*one[palceInArray]);
          zero[palceInArray] = one[palceInArray] + material_device[palceInArray]*(
-            one[(i+1)*2048 + (j+0)] + 
-            one[(i-1)*2048 + (j+0)] +  
-            one[(i+0)*2048 + (j+1)] + 
-            one[(i+0)*2048 + (j-1)] - 
+            one[(i+1)* GRID_SIZE_X + (j+0)] + 
+            one[(i-1)* GRID_SIZE_X + (j+0)] +  
+            one[(i+0)* 2048 + (j+1)] + 
+            one[(i+0)* 2048 + (j-1)] - 
             4*one[palceInArray]);
 
+        // if (blockIdx.y % 20 == 0){
+        //     printf("Y: %d\n", one[(i+1)*2048 + (j+0)] );
+        // }
     }
+            
+
+    
     // if (threadIdx.)  {
     //     printf("%d\n", blockIdx.x);
     // //     printf("i: %d, j: %d\n",i, j );
@@ -180,6 +185,7 @@ __global__ void  ftcs_kernel(int step, float *zero, float *one, float *material_
     // if (blockIdx.y % 20 == 0){
     //     printf("Y: %d\n",blockIdx.y );
     // }
+    
 }
 
 /* Shared memory kernel */
@@ -192,12 +198,27 @@ __global__ void  ftcs_kernel_texture( /* Add arguments here */ ){
 
 }
 
+
 /* External heat kernel, should do the same work as the external
  * heat function in the serial code 
  */
-__global__ void external_heat_kernel( /* Add arguments here */ ){
+__global__ void external_heat_kernel(int step, float *zero, float *one){    
+    int i = (blockIdx.x * (blockDim.x)) + threadIdx.x;
+    int j = (blockIdx.y * (blockDim.y)) + threadIdx.y;
+    int palceInArray = i * GRID_SIZE_X + j;
+    const int GRID_SIZE[2] = {2048, 2048};
 
+
+    if ((j > (GRID_SIZE[0]/4)) &&  j <= (3*GRID_SIZE[0]/4) && i > (GRID_SIZE[1]/2)-(GRID_SIZE[1]/16) && i<=(GRID_SIZE[1]/2)+(GRID_SIZE[1]/16) ){        
+        // printf("Running\n");
+        // if (step % 2 == 0){
+            one[palceInArray] = 100;
+        // } else {
+            zero[palceInArray] = 100;
+        // }           
+    }
 }
+
 
 /* Set up and call ftcs_kernel
  * should return the execution time of the kernel
@@ -206,8 +227,13 @@ __global__ void external_heat_kernel( /* Add arguments here */ ){
 //Dele med mindre. 
 float ftcs_solver_gpu( int step, int block_size_x, int block_size_y ){
      // Compute thread-block size
+    
+    int numOfThreadsToUseX = ceil((float)GRID_SIZE[0]/(float)block_size_x);
+    int numOfThreadsToUseY = ceil((float)GRID_SIZE[1]/(float)block_size_y);
+
+    // printf("numOfThreadsToUseX: %d numOfThreadsToUseY %d\n",numOfThreadsToUseX, numOfThreadsToUseX );
     dim3 gridBlock(block_size_x, block_size_y); 
-    dim3 threadBlock(GRID_SIZE[0]/block_size_x, GRID_SIZE[1]/block_size_y);
+    dim3 threadBlock(numOfThreadsToUseX, numOfThreadsToUseY);
 
     // Call kernel
     ftcs_kernel<<<gridBlock, threadBlock>>>( step, temperature_device[0], temperature_device[1], material_device);
@@ -237,6 +263,16 @@ float ftcs_solver_gpu_texture( int step, int block_size_x, int block_size_y ){
 
 /* Set up and call external_heat_kernel */
 void external_heat_gpu( int step, int block_size_x, int block_size_y ){
+    int numOfThreadsToUseX = ceil((float)GRID_SIZE[0]/(float)block_size_x);
+    int numOfThreadsToUseY = ceil((float)GRID_SIZE[1]/(float)block_size_y);
+
+    // printf("numOfThreadsToUseX: %d numOfThreadsToUseY %d\n",numOfThreadsToUseX, numOfThreadsToUseX );
+    dim3 gridBlock(block_size_x, block_size_y); 
+    dim3 threadBlock(numOfThreadsToUseX, numOfThreadsToUseY);
+
+    // Call kernel
+    external_heat_kernel<<<gridBlock, threadBlock>>>( step, temperature_device[0], temperature_device[1]);
+
 }
 
 void print_gpu_info(){
@@ -306,6 +342,11 @@ int main ( int argc, char **argv ){
     }
     
     print_time_stats();
+    cudaFree(material_device);
+    cudaFree(temperature_device[0]);
+    cudaFree(temperature_device[1]);
+
+
         
     exit ( EXIT_SUCCESS );
 }
