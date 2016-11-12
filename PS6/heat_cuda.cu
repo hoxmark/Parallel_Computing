@@ -192,61 +192,85 @@ __global__ void  ftcs_kernel(int step, float *zero, float *one, float *material_
 __global__ void  ftcs_kernel_shared( int step, float *zero, float *one, float *material_device ){
     int i = (blockIdx.x * (blockDim.x)) + threadIdx.x;
     int j = (blockIdx.y * (blockDim.y)) + threadIdx.y;
-    int palceInArray = i * GRID_SIZE_X + j;
-
+    int palceInArray = j * GRID_SIZE_X + i;
+    const int GRID_SIZE[2] = {2048, 2048};
+    const int MAXSIZE = 2048*2048;
     extern __shared__ float sharedArray[];
+
+    float * input;
+    float * output;
+
+    if (step % 2 == 0){
+        input = zero;
+        output = one;
+    } else {
+        input = one; 
+        output = zero; 
+    }
+
+    int local_xy = (threadIdx.y + 1) * (blockDim.x + 2) + threadIdx.x + 1;
+    int local_xp1y = (threadIdx.y + 1) * (blockDim.x + 2) + threadIdx.x + 2;
+    int local_xm1y = (threadIdx.y + 1) * (blockDim.x + 2) + threadIdx.x;
+    int local_xyp1 = (threadIdx.y + 2) * (blockDim.x + 2) + threadIdx.x + 1;
+    int local_xym1 = (threadIdx.y) * (blockDim.x + 2) + threadIdx.x + 1;
+
+    int xy = j * 2048 + i;
+    int xp1y = j * 2048 + i + 1;
+    int xm1y = j * 2048 + i - 1;
+    int xyp1 = (j + 1) * 2048 + i;
+    int xym1 = (j - 1) * 2048 + i;
+
+
+    if (xy> MAXSIZE || xy< 0){
+        printf("outside");
+    } else {
+
+        sharedArray[local_xy] = input[xy];
+
+        // //Build halo  
+        if (threadIdx.x == 0){
+            if (xm1y >= MAXSIZE){
+                sharedArray[local_xm1y] = input[xy];                    
+            } else {
+                sharedArray[local_xm1y] = input[xm1y];                    
+            }
+        }
+
+        if (threadIdx.y == 0){
+            if ( xym1 >=  MAXSIZE){
+                sharedArray[local_xym1] = input[xy];
+            }else {                    
+                sharedArray[local_xym1] = input[xym1];
+            }
+        }    
+
+        if (threadIdx.x == blockDim.x - 1){
+            if(xp1y>= MAXSIZE ){
+                sharedArray[local_xp1y] = input[xy];
+            } else {
+                sharedArray[local_xp1y] = input[xp1y];
+            }
+        }
+
+        if (threadIdx.y == blockDim.y-1){
+            if (xyp1 >= MAXSIZE){
+                sharedArray[local_xyp1] = input[xy];
+            } else {
+                sharedArray[local_xyp1] = input[xyp1];
+            }
+        }
+    }
     
-    //Build halo
-    if (threadIdx.x == 0){
-       sharedArray[(threadIdx.y)*(blockDim.x + 2) + (threadIdx.x + 1)] = zero[(i-1) * 2048 + j];
-    }
-
-    if (threadIdx.x == 15){
-       sharedArray[(threadIdx.y+2)*(blockDim.x + 2)+ (threadIdx.x + 1)] = zero[(i+1) * 2048 + j];
-    }    
-
-    if (threadIdx.y == 0){
-       sharedArray[(threadIdx.y+1)*(blockDim.x + 2)+ (threadIdx.x + 1)] = zero[(i) * 2048 + j-1];
-    }
-
-    if (threadIdx.y == 15){
-       sharedArray[(threadIdx.y+1)*(blockDim.x + 2)+ (threadIdx.x + 1)] = zero[(i) * 2048 + j+1];
-    }
-
-
-    if (step % 2 == 0){
-        sharedArray[(threadIdx.y+1)*(blockDim.x + 2)+ (threadIdx.x + 1)] = zero[palceInArray];
-    } else {
-        sharedArray[(threadIdx.y+1)*(blockDim.x + 2)+ (threadIdx.x + 1)] = one[palceInArray];
-    }
     __syncthreads();
-
-    if (step % 2 == 0){
-        // one[palceInArray] = sharedArray[(threadIdx.y+1)*16 + (threadIdx.x + 1)]+=0.01;
-        one[palceInArray] = sharedArray[(threadIdx.y+1)*16 + (threadIdx.x + 1)] + material_device[palceInArray]*(
-            sharedArray[(threadIdx.y+2)*(blockDim.x + 2)+ (threadIdx.x + 1)] + 
-            sharedArray[(threadIdx.y+0)*(blockDim.x + 2)+ (threadIdx.x + 1)] +  
-            sharedArray[(threadIdx.y+1)*(blockDim.x + 2)+ (threadIdx.x + 2)] + 
-            sharedArray[(threadIdx.y+1)*(blockDim.x + 2)+ (threadIdx.x + 0)] - 
-            4*one[(threadIdx.y+1)*(blockDim.x + 2) + (threadIdx.x + 1)]);
-    } else {
-        // zero[palceInArray] = one[palceInArray] + material_device[palceInArray]*(one[(i+1)*2048 + j] + one[(i-1)*2048 + j] +  one[(i)*2048 + j+1] + one[(i*2048) + (j-1)] - 4*one[palceInArray]);
-         // zero[palceInArray] = sharedArray[(threadIdx.y+1)*16 + (threadIdx.x + 1)]+=0.01; 
-
-         zero[palceInArray] = sharedArray[(threadIdx.y+1)*16 + (threadIdx.x + 1)] + material_device[palceInArray]*(
-            sharedArray[(threadIdx.y+2)*(blockDim.x + 2)+ (threadIdx.x + 1)] + 
-            sharedArray[(threadIdx.y+0)*(blockDim.x + 2)+ (threadIdx.x + 1)] +  
-            sharedArray[(threadIdx.y+1)*(blockDim.x + 2)+ (threadIdx.x + 2)] + 
-            sharedArray[(threadIdx.y+1)*(blockDim.x + 2)+ (threadIdx.x + 0)] - 
-            4*one[(threadIdx.y+1)*(blockDim.x + 2) + (threadIdx.x + 1)]);
-        // if (blockIdx.y % 20 == 0){
-        //     printf("Y: %d\n", one[(i+1)*2048 + (j+0)] );
-        // }
-    }
-
-
-
+     
+    output[palceInArray] = sharedArray[(threadIdx.y+1)*(blockDim.x + 2) + (threadIdx.x + 1)] + material_device[palceInArray]*(
+        sharedArray[(threadIdx.y+1)*(blockDim.x + 2)+ (threadIdx.x + 2)] + 
+        sharedArray[(threadIdx.y+1)*(blockDim.x + 2)+ (threadIdx.x + 0)] +  
+        sharedArray[(threadIdx.y+2)*(blockDim.x + 2)+ (threadIdx.x + 1)] + 
+        sharedArray[(threadIdx.y+0)*(blockDim.x + 2)+ (threadIdx.x + 1)] - 
+        4*sharedArray[(threadIdx.y+1)*(blockDim.x + 2) + (threadIdx.x + 1)]);
 }   
+
 
 /* Texture memory kernel */
 __global__ void  ftcs_kernel_texture( /* Add arguments here */ ){
@@ -283,6 +307,10 @@ __global__ void external_heat_kernel(int step, float *zero, float *one){
 float ftcs_solver_gpu( int step, int block_size_x, int block_size_y ){
      // Compute thread-block size
 
+    cudaEvent_t start, stop;
+    float time;
+    
+
     int numOfThreadsToUseX = ceil((float)GRID_SIZE[0]/(float)block_size_x);
     int numOfThreadsToUseY = ceil((float)GRID_SIZE[1]/(float)block_size_y);
 
@@ -290,10 +318,19 @@ float ftcs_solver_gpu( int step, int block_size_x, int block_size_y ){
     dim3 gridBlock(block_size_x, block_size_y); 
     dim3 threadBlock(numOfThreadsToUseX, numOfThreadsToUseY);
 
+
+    cudaEventCreate(&start);
+    cudaEventRecord(start, 0);
     // Call kernel
     ftcs_kernel<<<gridBlock, threadBlock>>>( step, temperature_device[0], temperature_device[1], material_device);
     
-    float time = -1.0;
+    
+    cudaEventCreate(&stop);
+    cudaEventRecord(stop, 0);
+    cudaEventSynchronize(stop);
+
+    cudaEventElapsedTime(&time, start, stop);
+
     return time;
 }
 
@@ -301,6 +338,8 @@ float ftcs_solver_gpu( int step, int block_size_x, int block_size_y ){
  * should return the execution time of the kernel
  */
 float ftcs_solver_gpu_shared( int step, int block_size_x, int block_size_y ){
+    cudaEvent_t start, stop;
+    float time;
     
     int numOfThreadsToUseX = ceil((float)GRID_SIZE[0]/(float)block_size_x);
     int numOfThreadsToUseY = ceil((float)GRID_SIZE[1]/(float)block_size_y);
@@ -311,11 +350,18 @@ float ftcs_solver_gpu_shared( int step, int block_size_x, int block_size_y ){
 
 
     int sharedArraySize = (numOfThreadsToUseX+2)*(numOfThreadsToUseY+2)*sizeof(float);
-    // printf("%d\n", sharedArraySize );
-    // Call Kernel
+
+    cudaEventCreate(&start);
+    cudaEventRecord(start, 0);
+
     ftcs_kernel_shared<<<gridBlock, threadBlock, sharedArraySize>>>( step, temperature_device[0], temperature_device[1], material_device);
     
-    float time = -1.0;
+    cudaEventCreate(&stop);
+    cudaEventRecord(stop, 0);
+    cudaEventSynchronize(stop);
+
+    cudaEventElapsedTime(&time, start, stop);
+
     return time;
 }
 
@@ -340,6 +386,7 @@ void external_heat_gpu( int step, int block_size_x, int block_size_y ){
 
     // Call kernel
     external_heat_kernel<<<gridBlock, threadBlock>>>( step, temperature_device[0], temperature_device[1]);
+
 
 }
 
