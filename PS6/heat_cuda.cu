@@ -193,13 +193,16 @@ __global__ void  ftcs_kernel_shared( int step, float *zero, float *one, float *m
     int i = (blockIdx.x * (blockDim.x)) + threadIdx.x;
     int j = (blockIdx.y * (blockDim.y)) + threadIdx.y;
     int palceInArray = j * GRID_SIZE_X + i;
-    const int GRID_SIZE[2] = {2048, 2048};
     const int MAXSIZE = 2048*2048;
     extern __shared__ float sharedArray[];
+
+    //Blocksize with halo
+    int blockDimWithHalo = blockDim.x + 2;
 
     float * input;
     float * output;
 
+    //CHoose which shared array to use as input and output
     if (step % 2 == 0){
         input = zero;
         output = one;
@@ -208,61 +211,60 @@ __global__ void  ftcs_kernel_shared( int step, float *zero, float *one, float *m
         output = zero; 
     }
 
-    int local_xy = (threadIdx.y + 1) * (blockDim.x + 2) + threadIdx.x + 1;
-    int local_xp1y = (threadIdx.y + 1) * (blockDim.x + 2) + threadIdx.x + 2;
-    int local_xm1y = (threadIdx.y + 1) * (blockDim.x + 2) + threadIdx.x;
-    int local_xyp1 = (threadIdx.y + 2) * (blockDim.x + 2) + threadIdx.x + 1;
-    int local_xym1 = (threadIdx.y) * (blockDim.x + 2) + threadIdx.x + 1;
+    //Set up indexes. 
+    int middleShared = (threadIdx.y + 1) * blockDimWithHalo + threadIdx.x + 1;
+    int middleSharedAddOneY = (threadIdx.y + 1) * blockDimWithHalo + threadIdx.x + 2;
+    int middleSharedRemoveOneY = (threadIdx.y + 1) * blockDimWithHalo + threadIdx.x;
+    int middleSharedAddOneX = (threadIdx.y + 2) * blockDimWithHalo + threadIdx.x + 1;
+    int middleSharedRemoveOneX = (threadIdx.y) * blockDimWithHalo + threadIdx.x + 1;
 
-    int xy = j * 2048 + i;
-    int xp1y = j * 2048 + i + 1;
-    int xm1y = j * 2048 + i - 1;
-    int xyp1 = (j + 1) * 2048 + i;
-    int xym1 = (j - 1) * 2048 + i;
+    int mainPixel = j * 2048 + i;
+    int mainPixelAddY = j * 2048 + i + 1;
+    int mainPixelRemY = j * 2048 + i - 1;
+    int mainPixelAddX = (j + 1) * 2048 + i;
+    int mainPixelRemX = (j - 1) * 2048 + i;
 
-
-    if (xy> MAXSIZE || xy< 0){
-        printf("outside");
+    //outside, do nothing
+    if (mainPixel> MAXSIZE || mainPixel< 0){
     } else {
-
-        sharedArray[local_xy] = input[xy];
-
+        //Add the main pixel
+        sharedArray[middleShared] = input[mainPixel];        
         // //Build halo  
         if (threadIdx.x == 0){
-            if (xm1y >= MAXSIZE){
-                sharedArray[local_xm1y] = input[xy];                    
+            if (mainPixelRemY >= MAXSIZE){
+                sharedArray[middleSharedRemoveOneY] = input[mainPixel];                    
             } else {
-                sharedArray[local_xm1y] = input[xm1y];                    
+                sharedArray[middleSharedRemoveOneY] = input[mainPixelRemY];                    
             }
         }
 
         if (threadIdx.y == 0){
-            if ( xym1 >=  MAXSIZE){
-                sharedArray[local_xym1] = input[xy];
+            if ( mainPixelRemX >=  MAXSIZE){
+                sharedArray[middleSharedRemoveOneX] = input[mainPixel];
             }else {                    
-                sharedArray[local_xym1] = input[xym1];
+                sharedArray[middleSharedRemoveOneX] = input[mainPixelRemX];
             }
         }    
 
         if (threadIdx.x == blockDim.x - 1){
-            if(xp1y>= MAXSIZE ){
-                sharedArray[local_xp1y] = input[xy];
+            if(mainPixelAddY>= MAXSIZE ){
+                sharedArray[middleSharedAddOneY] = input[mainPixel];
             } else {
-                sharedArray[local_xp1y] = input[xp1y];
+                sharedArray[middleSharedAddOneY] = input[mainPixelAddY];
             }
         }
 
         if (threadIdx.y == blockDim.y-1){
-            if (xyp1 >= MAXSIZE){
-                sharedArray[local_xyp1] = input[xy];
+            if (mainPixelAddX >= MAXSIZE){
+                sharedArray[middleSharedAddOneX] = input[mainPixel];
             } else {
-                sharedArray[local_xyp1] = input[xyp1];
+                sharedArray[middleSharedAddOneX] = input[mainPixelAddX];
             }
         }
     }
     
     __syncthreads();
-     
+    //Do the calculation. 
     output[palceInArray] = sharedArray[(threadIdx.y+1)*(blockDim.x + 2) + (threadIdx.x + 1)] + material_device[palceInArray]*(
         sharedArray[(threadIdx.y+1)*(blockDim.x + 2)+ (threadIdx.x + 2)] + 
         sharedArray[(threadIdx.y+1)*(blockDim.x + 2)+ (threadIdx.x + 0)] +  
